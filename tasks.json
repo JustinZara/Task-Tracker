@@ -1,0 +1,23 @@
+[
+{
+	"id": "0",
+	"description": "eat food",
+	"status": "todo",
+	"createdAt": "Fri Jan 17 02:39:07 2025",
+	"updatedAt": "Fri Jan 17 02:39:07 2025"
+},
+{
+	"id": "1",
+	"description": "Do laundry",
+	"status": "todo",
+	"createdAt": "Fri Jan 17 02:39:12 2025",
+	"updatedAt": "Fri Jan 17 02:39:12 2025"
+},
+{
+	"id": "2",
+	"description": "wake up",
+	"status": "todo",
+	"createdAt": "Fri Jan 17 02:39:18 2025",
+	"updatedAt": "Fri Jan 17 02:39:18 2025"
+}
+]
