@@ -25,18 +25,26 @@ class task {
     string taskVariables;
 
     task(string newDesc, ofstream &file){//constructor for task object
-
         currID = numOfIDs++;
         createdAt = getCurrTime();
         updatedAt = getCurrTime();
         desc = newDesc;
         status = "todo";
+        /*
         taskVariables = 
         "{\n\t\"id\": \""         +to_string(currID)  +"\",\n"+
         "\t\"description\": "   +desc               +",\n"+
         "\t\"status\": \""        +status             +"\",\n"+
         "\t\"createdAt\": \""     +createdAt          +"\",\n"+
         "\t\"updatedAt\": \""     +updatedAt          +"\"\n"+
+        "}";
+        */
+        taskVariables = 
+        "{\"id\": \""           +to_string(currID)  +"\","+
+        "\"description\": "     +desc               +","+
+        "\"status\": \""        +status             +"\","+
+        "\"createdAt\": \""     +createdAt          +"\","+
+        "\"updatedAt\": \""     +updatedAt          +"\""+
         "}";
 
         if(currID != 0)
@@ -47,7 +55,7 @@ class task {
     void updateTask(string newDesc, ofstream &file, ifstream &inFile) {
         desc = newDesc;
         updatedAt = getCurrTime();
-        
+        /*
         string newTaskVariables = 
         "{\n\t\"id\": \""         +to_string(currID)  +"\",\n"+
         "\t\"description\": "   +desc               +",\n"+
@@ -55,6 +63,13 @@ class task {
         "\t\"createdAt\": \""     +createdAt          +"\",\n"+
         "\t\"updatedAt\": \""     +updatedAt          +"\"\n"+
         "}";
+        */
+        string nextLineOfFile;
+        while(nextLineOfFile != taskVariables) {
+            inFile >> nextLineOfFile;
+            cout <<nextLineOfFile;            
+        }
+        inFile.close();
 
         if(currID != 0)
             file << ",\n";
@@ -72,11 +87,12 @@ bool strIsValidTask(string input) {//checks if user's inputted task is a valid s
 int main() {
     string userInput;
     ofstream file("tasks.json");
-    ifstream inFile("tasks.json");
+    //ifstream inFile("tasks.json");
+    //string filename = "tasks.json";
     vector<task> tasks = {};
     string newString;
-
     file << "[\n";
+
     while(userInput != "end") {
         //cin >> userInput;
         getline(cin, userInput);
@@ -93,9 +109,21 @@ int main() {
                 cout << tasks[i].desc << " ";
             }
     }
+    //ofstream file(filename);
     file << "\n]";
-    
     file.close();
+
+    string lineInFile;
+    string lineToCompare = tasks[1].taskVariables;
+    int numOfLines = 0;
+    ifstream inFile("tasks.json");
+    while (getline(inFile, lineInFile)){
+        if(lineInFile == lineToCompare || lineInFile == lineToCompare+",") {
+            cout << "at line 0: " << lineToCompare << "\n";
+        }
+        cout << numOfLines++ << " ";
+        cout <<lineInFile << "\n";
+    }
     inFile.close();
     return 0;
 }
