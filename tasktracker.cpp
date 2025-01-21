@@ -55,15 +55,6 @@ class task {
     void updateTask(string newDesc, ofstream &file, ifstream &inFile) {
         desc = newDesc;
         updatedAt = getCurrTime();
-        /*
-        string newTaskVariables = 
-        "{\n\t\"id\": \""         +to_string(currID)  +"\",\n"+
-        "\t\"description\": "   +desc               +",\n"+
-        "\t\"status\": \""        +status             +"\",\n"+
-        "\t\"createdAt\": \""     +createdAt          +"\",\n"+
-        "\t\"updatedAt\": \""     +updatedAt          +"\"\n"+
-        "}";
-        */
         string nextLineOfFile;
         while(nextLineOfFile != taskVariables) {
             inFile >> nextLineOfFile;
