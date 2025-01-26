@@ -10,6 +10,7 @@ int numOfIDs = 0;
 string getCurrTime() {
     time_t timestamp;
     string timeString;
+
     time(&timestamp);
     timeString = ctime(&timestamp);
     return timeString.substr(0, timeString.length()-1);//remove \n char from end of time_t variable
@@ -71,31 +72,21 @@ void update_json(string filename, vector<task> list) {
         cout << "error opening file\n";
         return;
     }
-
     write_file << "[\n";
     for(int i = 0; i < list.size();i++) {
-        if (i != 0) {
+        if (i != 0)
             write_file << ",\n";
-        }
         write_file << list[i].taskVariables;
     }
     write_file << "\n]";
     write_file.close();
 }
 
-void read_file(string filename){
-    fstream read_file;
-    string line;
-
-    read_file.open(filename);
-    if (read_file.fail() == true) {//if file fails to open
-        cout << "error opening file\n";
-        return;
+void print_same_status_tasks(string status, vector<task> &tasks) {
+    for(task task : tasks) {
+        if(task.status == status)
+            cout << task.taskVariables << "\n";
     }
-    while(getline(read_file, line)){
-        cout << line << "\n";
-    }
-    read_file.close();
 }
 
 int main() {
@@ -110,12 +101,10 @@ int main() {
             tasks.push_back(newTask);
             cout << "Task added successfully (ID: "+to_string(newTask.currID)+")\n";
             update_json("tasks.json", tasks);
-        } else if(userInput.length() > 8 && userInput.substr(0, 7) == "update " && tasks.size() > 0 && strIsValidTask(userInput.substr(9))) {//update 0 "..."
+        } else if(userInput.substr(0, 7) == "update " && tasks.size() > 0 && strIsValidTask(userInput.substr(9)) && userInput.length() > 8) {//update 0 "..."
             int index = userInput.at(7) - '0';//subtract ascii value of '0' from character, getting actual integer value
             tasks[index].updateTask(userInput.substr(9));
             update_json("tasks.json", tasks);
-        } else if(userInput == "list") {//read lines of file
-            read_file("tasks.json");
         } else if(userInput.substr(0, 7) == "delete " && isdigit(userInput.at(7)) && (tasks.size() > 0)) {
             int index = (int)userInput.at(7);
             tasks.erase(tasks.begin()+index-1);
@@ -128,6 +117,15 @@ int main() {
             int index = userInput.at(10) - '0';
             tasks[index].set_status("done");
             update_json("tasks.json", tasks);
+        } else if(userInput == "list") {
+            for (task task : tasks)
+                cout << task.taskVariables << "\n";
+        } else if(userInput == "list done") {
+            print_same_status_tasks("done", tasks);
+        } else if(userInput == "list todo") {
+            print_same_status_tasks("todo", tasks);
+        } else if(userInput == "list in-progress") {
+            print_same_status_tasks("in-progress", tasks);
         }
     }
 
